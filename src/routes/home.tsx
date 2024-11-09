@@ -111,12 +111,12 @@ const Home = () => {
   }, []);
 
   // Screen orientation change event
-  useEffect(() => {
-    screen?.orientation.addEventListener("change", handleResize);
-    return () => {
-      screen?.orientation.removeEventListener("change", handleResize);
-    };
-  }, []);
+  // useEffect(() => {
+  //   screen?.orientation.addEventListener("change", handleResize);
+  //   return () => {
+  //     screen?.orientation.removeEventListener("change", handleResize);
+  //   };
+  // }, []);
 
   return (
     <main
