@@ -9,4 +9,27 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  --primary-color: rgba(132, 94, 194, 0.5);
+}
+
+.main_mask {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main_mask::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background-color: var(--primary-color);
+  backdrop-filter: opacity(0);
+  mask: linear-gradient(to right, red, transparent 15%),
+    linear-gradient(to left, red, transparent 15%);
+  -webkit-mask: linear-gradient(to right, red, transparent 15%),
+    linear-gradient(to left, red, transparent 15%);
+  pointer-events: none;
+  touch-action: none;
 }
