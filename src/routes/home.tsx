@@ -120,7 +120,7 @@ const Home = () => {
 
   return (
     <main
-      className="overflow-hidden h-full absolute inset-0 flex justify-center bg-primary-100 main_mask"
+      className="overflow-hidden  absolute inset-0 flex justify-center bg-primary-100 main_mask"
       style={{
         gap: `${cardSpacing}px`,
       }}
