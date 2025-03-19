@@ -4,7 +4,8 @@ import { Observer } from "gsap/Observer";
 import { MovieData } from "../data/movie";
 import { Fragment } from "react/jsx-runtime";
 import { centerDistance } from "../utils/helper";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 
 gsap.registerPlugin(Observer);
 const CARD_WIDTH_BUFFER = 30;
@@ -20,6 +21,7 @@ const Home = () => {
   // Constants
   const CARD_REPEAT = 8;
   const CARD_HEIGHT = cardWidth * 1.3;
+  const velocityRef = useRef(0);
   // const COLUMN_CARD_NO = 10 * CARD_REPEAT;
   // const TOTAL_COLUMN_HEIGHT =
   //   CARD_HEIGHT * COLUMN_CARD_NO + cardSpacing * (COLUMN_CARD_NO - 1);
@@ -29,16 +31,50 @@ const Home = () => {
     const gridCon = gridArray[0].getBoundingClientRect() as DOMRect;
     // console.log(reset)
     gridArray.forEach((section) => {
-      gsap.to(section, {
-        duration: 0,
+      gsap.set(section, {
         y: `-${gridCon.height / 2}`,
       });
     });
   };
 
-  // Handle scroll function
-  const handleScroll = (direction: "up" | "down", observer: Observer) => {
+  const decelerateGrid = (observer: Observer) => {
     const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
+
+    const gridCon = gridArray[
+      (gridArray.length - 1) / 2
+    ]?.getBoundingClientRect() as DOMRect;
+    const resetPoint =
+      Math.floor(Math.abs(gridCon.y)) >
+        Math.floor((gridCon.height * 5) / CARD_REPEAT) ||
+      Math.floor(Math.abs(gridCon.y)) <
+        Math.floor((gridCon.height * 3) / CARD_REPEAT);
+
+    if (resetPoint) return;
+
+    const appplyDec = () => {
+      if (Math.abs(velocityRef.current) > 0) {
+        // Add a deceleration
+        console.log(velocityRef.current);
+        gridArray.forEach((section, i) => {
+          const usableDist = centerDistance(gridArray, i) + 1;
+          gsap.to(section, {
+            duration: 0.5,
+            ease: "none",
+            y: `+=${usableDist * velocityRef.current}`,
+          });
+        });
+        velocityRef.current = velocityRef.current * 0.95;
+        requestAnimationFrame(appplyDec);
+      }
+    };
+    velocityRef.current = observer.deltaY;
+    requestAnimationFrame(appplyDec);
+  };
+
+  // Handle scroll function
+  const handleScroll = (observer: Observer) => {
+    const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
+
     const gridCon = gridArray[
       (gridArray.length - 1) / 2
     ]?.getBoundingClientRect() as DOMRect;
@@ -50,15 +86,13 @@ const Home = () => {
     if (resetPoint) {
       resetGrids(gridArray);
     } else {
+      const typeSpeed = observer.event.type.includes("touch") ? 3 : 2;
       gridArray.forEach((section, i) => {
         const usableDist = centerDistance(gridArray, i) + 1;
-
         gsap.to(section, {
-          duration: 0.001,
-          y:
-            direction === "up"
-              ? `-=${1 * usableDist * observer.deltaY}`
-              : `-=${1 * usableDist * observer.deltaY}`,
+          duration: 0.2,
+          ease: "none",
+          y: `+=${usableDist * observer.deltaY * typeSpeed}`,
         });
       });
     }
@@ -92,9 +126,13 @@ const Home = () => {
   useGSAP(() => {
     Observer.create({
       target: window,
-      type: "wheel,scroll,touch",
-      onDown: (self) => handleScroll("down", self),
-      onUp: (self) => handleScroll("up", self),
+      type: "wheel,pointer,touch",
+      onDown: (self) => handleScroll(self),
+      onUp: (self) => handleScroll(self),
+      wheelSpeed: -1,
+      onDragEnd: (self) => {
+        // decelerateGrid(self);
+      },
     });
   });
 
@@ -120,7 +158,7 @@ const Home = () => {
 
   return (
     <main
-      className="overflow-hidden  absolute inset-0 flex justify-center bg-primary-100 main_mask"
+      className="absolute inset-0 flex justify-center overflow-hidden bg-primary-100 main_mask"
       style={{
         gap: `${cardSpacing}px`,
       }}
@@ -128,7 +166,7 @@ const Home = () => {
       {new Array(columns).fill(0).map((_, columnIndex) => (
         <div
           key={columnIndex}
-          className="flex flex-col justify-center items-center h-fit infinity_grid_con"
+          className="flex flex-col items-center justify-center h-fit infinity_grid_con"
           id="infinity_grid_con"
           style={{
             // transform: `translate(0px, -${TOTAL_COLUMN_HEIGHT / 2.001}px)`,
@@ -153,7 +191,7 @@ const Home = () => {
                         src={movie.image?.medium || "/assets/movie.webp"}
                         loading="lazy"
                         alt={movie.name}
-                        className="rounded-lg h-full w-full"
+                        className="w-full h-full rounded-lg"
                       />
                     </div>
                   );
@@ -167,4 +205,6 @@ const Home = () => {
   );
 };
 
-export default Home;
+export const Route = createFileRoute("/")({
+  component: Home,
+});
