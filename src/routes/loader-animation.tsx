@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 const Loader = () => {
-  const [lineCount, setLineCount] = useState(60);
-  const [circleSize, setCircleSize] = useState(200);
-  const [lineLength, setLineLength] = useState(20);
-  const [lineWidth, setLineWidth] = useState(2);
+  const lineCount = 60;
+  const circleSize = 200;
+  const lineLength = 20;
+  const lineWidth = 2;
   const extendedLineLength = lineLength + 20;
   const circleLengthExtension = lineLength + 50;
+  const extendedLineDiameter = circleSize + circleLengthExtension * 2;
   useEffect(() => {
     const gParent = document.getElementById("g-parent");
     if (!gParent) return;
@@ -40,11 +40,11 @@ const Loader = () => {
       <svg
         width={circleSize + circleLengthExtension * 2}
         height={circleSize + circleLengthExtension * 2}
-        className=""
+        viewBox={`-${extendedLineDiameter / 5} -${extendedLineDiameter / 5} ${extendedLineDiameter} ${extendedLineDiameter}`}
       >
         <g
           id="g-parent"
-          transform={`translate(${circleLengthExtension}, ${circleLengthExtension})`}
+          // transform={`translate(${circleLengthExtension}, ${circleLengthExtension})`}
         >
           {new Array(lineCount).fill(0).map((_, i) => {
             const radius = circleSize / 2;

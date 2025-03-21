@@ -11,15 +11,25 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TodoImport } from './routes/todo'
 import { Route as TestImport } from './routes/test'
 import { Route as SprayImport } from './routes/spray'
+import { Route as PathTestImport } from './routes/path-test'
 import { Route as PathImport } from './routes/path'
 import { Route as LoaderAnimationImport } from './routes/loader-animation'
+import { Route as IslandImport } from './routes/island'
 import { Route as GooImport } from './routes/goo'
 import { Route as GalaxyImport } from './routes/galaxy'
+import { Route as ClockImport } from './routes/clock'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const TodoRoute = TodoImport.update({
+  id: '/todo',
+  path: '/todo',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const TestRoute = TestImport.update({
   id: '/test',
@@ -30,6 +40,12 @@ const TestRoute = TestImport.update({
 const SprayRoute = SprayImport.update({
   id: '/spray',
   path: '/spray',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PathTestRoute = PathTestImport.update({
+  id: '/path-test',
+  path: '/path-test',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -45,6 +61,12 @@ const LoaderAnimationRoute = LoaderAnimationImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const IslandRoute = IslandImport.update({
+  id: '/island',
+  path: '/island',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const GooRoute = GooImport.update({
   id: '/goo',
   path: '/goo',
@@ -54,6 +76,12 @@ const GooRoute = GooImport.update({
 const GalaxyRoute = GalaxyImport.update({
   id: '/galaxy',
   path: '/galaxy',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClockRoute = ClockImport.update({
+  id: '/clock',
+  path: '/clock',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/clock': {
+      id: '/clock'
+      path: '/clock'
+      fullPath: '/clock'
+      preLoaderRoute: typeof ClockImport
+      parentRoute: typeof rootRoute
+    }
     '/galaxy': {
       id: '/galaxy'
       path: '/galaxy'
@@ -86,6 +121,13 @@ declare module '@tanstack/react-router' {
       path: '/goo'
       fullPath: '/goo'
       preLoaderRoute: typeof GooImport
+      parentRoute: typeof rootRoute
+    }
+    '/island': {
+      id: '/island'
+      path: '/island'
+      fullPath: '/island'
+      preLoaderRoute: typeof IslandImport
       parentRoute: typeof rootRoute
     }
     '/loader-animation': {
@@ -102,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PathImport
       parentRoute: typeof rootRoute
     }
+    '/path-test': {
+      id: '/path-test'
+      path: '/path-test'
+      fullPath: '/path-test'
+      preLoaderRoute: typeof PathTestImport
+      parentRoute: typeof rootRoute
+    }
     '/spray': {
       id: '/spray'
       path: '/spray'
@@ -116,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
+    '/todo': {
+      id: '/todo'
+      path: '/todo'
+      fullPath: '/todo'
+      preLoaderRoute: typeof TodoImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -123,84 +179,116 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clock': typeof ClockRoute
   '/galaxy': typeof GalaxyRoute
   '/goo': typeof GooRoute
+  '/island': typeof IslandRoute
   '/loader-animation': typeof LoaderAnimationRoute
   '/path': typeof PathRoute
+  '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
   '/test': typeof TestRoute
+  '/todo': typeof TodoRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/clock': typeof ClockRoute
   '/galaxy': typeof GalaxyRoute
   '/goo': typeof GooRoute
+  '/island': typeof IslandRoute
   '/loader-animation': typeof LoaderAnimationRoute
   '/path': typeof PathRoute
+  '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
   '/test': typeof TestRoute
+  '/todo': typeof TodoRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/clock': typeof ClockRoute
   '/galaxy': typeof GalaxyRoute
   '/goo': typeof GooRoute
+  '/island': typeof IslandRoute
   '/loader-animation': typeof LoaderAnimationRoute
   '/path': typeof PathRoute
+  '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
   '/test': typeof TestRoute
+  '/todo': typeof TodoRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/clock'
     | '/galaxy'
     | '/goo'
+    | '/island'
     | '/loader-animation'
     | '/path'
+    | '/path-test'
     | '/spray'
     | '/test'
+    | '/todo'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/clock'
     | '/galaxy'
     | '/goo'
+    | '/island'
     | '/loader-animation'
     | '/path'
+    | '/path-test'
     | '/spray'
     | '/test'
+    | '/todo'
   id:
     | '__root__'
     | '/'
+    | '/clock'
     | '/galaxy'
     | '/goo'
+    | '/island'
     | '/loader-animation'
     | '/path'
+    | '/path-test'
     | '/spray'
     | '/test'
+    | '/todo'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClockRoute: typeof ClockRoute
   GalaxyRoute: typeof GalaxyRoute
   GooRoute: typeof GooRoute
+  IslandRoute: typeof IslandRoute
   LoaderAnimationRoute: typeof LoaderAnimationRoute
   PathRoute: typeof PathRoute
+  PathTestRoute: typeof PathTestRoute
   SprayRoute: typeof SprayRoute
   TestRoute: typeof TestRoute
+  TodoRoute: typeof TodoRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClockRoute: ClockRoute,
   GalaxyRoute: GalaxyRoute,
   GooRoute: GooRoute,
+  IslandRoute: IslandRoute,
   LoaderAnimationRoute: LoaderAnimationRoute,
   PathRoute: PathRoute,
+  PathTestRoute: PathTestRoute,
   SprayRoute: SprayRoute,
   TestRoute: TestRoute,
+  TodoRoute: TodoRoute,
 }
 
 export const routeTree = rootRoute
@@ -214,16 +302,23 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/clock",
         "/galaxy",
         "/goo",
+        "/island",
         "/loader-animation",
         "/path",
+        "/path-test",
         "/spray",
-        "/test"
+        "/test",
+        "/todo"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/clock": {
+      "filePath": "clock.tsx"
     },
     "/galaxy": {
       "filePath": "galaxy.tsx"
@@ -231,17 +326,26 @@ export const routeTree = rootRoute
     "/goo": {
       "filePath": "goo.tsx"
     },
+    "/island": {
+      "filePath": "island.tsx"
+    },
     "/loader-animation": {
       "filePath": "loader-animation.tsx"
     },
     "/path": {
       "filePath": "path.tsx"
     },
+    "/path-test": {
+      "filePath": "path-test.tsx"
+    },
     "/spray": {
       "filePath": "spray.tsx"
     },
     "/test": {
       "filePath": "test.tsx"
+    },
+    "/todo": {
+      "filePath": "todo.tsx"
     }
   }
 }

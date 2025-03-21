@@ -118,4 +118,21 @@ body {
 
 .blob:nth-child(2) {
   background: blue;
+  clip-path: polygon();
+}
+
+#ball {
+  offset-path: path(
+    "M10,400 L550,400 A50,50 0 0 0 600,350 L600,150 A50,50 0 0 1 650,100 L790,100"
+  );
+  animation: move 3s infinite;
+}
+
+@keyframes move {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
 }
