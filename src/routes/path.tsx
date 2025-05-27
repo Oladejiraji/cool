@@ -24,10 +24,10 @@ const Path = () => {
         />
 
         {/* Late curve */}
-        <path
+        {/* <path
           d="M10,400 L550,400 A50,50 0 0 0 600,350 L600,150 A50,50 0 0 1 650,100 L790,100"
           className="stroke-2 fill-none stroke-[grey]"
-        />
+        /> */}
 
         {/* Early curve animated */}
         <motion.path
@@ -49,7 +49,7 @@ const Path = () => {
         />
 
         {/* Late curve Animated */}
-        <motion.path
+        {/* <motion.path
           d="M10,400 L550,400 A50,50 0 0 0 600,350 L600,150 A50,50 0 0 1 650,100 L790,100"
           className="stroke-2 fill-none stroke-[#00ff00]"
           strokeLinecap="round"
@@ -65,7 +65,7 @@ const Path = () => {
               ease: "linear",
             },
           }}
-        />
+        /> */}
 
         {/* Animated straight line */}
         <motion.path
@@ -86,61 +86,47 @@ const Path = () => {
           }}
         />
         {/* Boxes */}
-        <rect
-          width={80}
-          height={40}
-          x="150"
-          y="380"
-          fill="#000"
-          filter="url(#spotlight)"
-        />
-        <rect width={80} height={40} x="450" y="380" fill="#000" />
-        <rect width={80} height={40} x="450" y="80" fill="#000" />
-        <rect width={80} height={40} x="700" y="80" fill="#000" />
+        <rect width={100} height={60} x="150" y="370" fill="#4b4d52" />
+        <text x="178" y="406" font-weight="700" filter="url(#outline)">
+          Darth
+        </text>
+        <rect width={100} height={60} x="450" y="370" fill="#4b4d52" />
+        <rect width={100} height={60} x="450" y="70" fill="#4b4d52" />
+        {/* <rect width={100} height={60} x="670" y="70" fill="#4b4d52" /> */}
 
-        {/* Filter */}
-        <defs>
-          {/* <!-- Define the spotlight filter --> * */}
-          <filter id="spotlight">
-            {/* Blur the area */}
+        <filter id="outline">
+          <feMorphology
+            in="SourceAlpha"
+            result="DILATED"
+            operator="dilate"
+            radius="0"
+          >
+            <animate
+              attributeName="radius"
+              from="0"
+              to="2"
+              dur="1s"
+              fill="freeze"
+            />
+          </feMorphology>
 
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="0.1"
-              result="blur"
-            />
-            {/* <!-- Create specular lighting effect --> */}
-            <feSpecularLighting
-              in="blur"
-              result="light"
-              // specularConstant="1"
-              // specularExponent="20"
-              lighting-color="white"
-            >
-              {/* <!-- Define the spotlight --> */}
-              <feSpotLight
-                x="190"
-                y="410"
-                z="100"
-                pointsAtX="160"
-                pointsAtY="400"
-                pointsAtZ="0"
-                limitingConeAngle="10"
-                // specularExponent="30"
-              />
-            </feSpecularLighting>
-            {/* <!-- Blend the lighting effect with the original rectangle --> */}
-            <feComposite
-              in="SourceGraphic"
-              in2="light"
-              operator="arithmetic"
-              k1="0"
-              k2="1"
-              k3="1"
-              k4="0"
-            />
-          </filter>
-        </defs>
+          <feFlood
+            flood-color="#32DFEC"
+            flood-opacity="1"
+            result="PINK"
+          ></feFlood>
+          <feComposite
+            in="PINK"
+            in2="DILATED"
+            operator="in"
+            result="OUTLINE"
+          ></feComposite>
+
+          <feMerge>
+            <feMergeNode in="OUTLINE" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </svg>
     </div>
   );

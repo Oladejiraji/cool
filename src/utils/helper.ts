@@ -26,3 +26,17 @@ export const centerDistance = <T>(array: T[], index: number) => {
 
 //   return clonedObj as T;
 // }
+
+// utils/splitStringUsingRegex.tsx
+
+export function splitStringUsingRegex(inputString: string): string[] {
+  const characters: string[] = [];
+  const regex = /[\s\S]/gu;
+
+  let match;
+  while ((match = regex.exec(inputString)) !== null) {
+    characters.push(match[0]);
+  }
+
+  return characters;
+}

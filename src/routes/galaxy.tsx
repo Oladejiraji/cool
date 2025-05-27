@@ -384,104 +384,104 @@ const Galaxy = () => {
       controls.update();
 
       // Rotate the galaxy
-      //   galaxyGroup.rotation.y += delta * parameters.rotationSpeed;
+      galaxyGroup.rotation.y += delta * parameters.rotationSpeed;
 
       // Pulse effect
-      //   const pulse =
-      //     Math.sin(time * parameters.pulseSpeed) * parameters.pulseIntensity;
-      //   galaxyGroup.scale.set(1 + pulse, 1 + pulse, 1 + pulse);
+      const pulse =
+        Math.sin(time * parameters.pulseSpeed) * parameters.pulseIntensity;
+      galaxyGroup.scale.set(1 + pulse, 1 + pulse, 1 + pulse);
 
       // Animate colors
-      //   if (parameters.animateColors && galaxyPoints) {
-      //     const hue = (time * 0.1) % 1;
-      //     const insideColorHSL = { h: 0, s: 0, l: 0 };
-      //     const outsideColorHSL = { h: 0, s: 0, l: 0 };
+      if (parameters.animateColors && galaxyPoints) {
+        const hue = (time * 0.1) % 1;
+        const insideColorHSL = { h: 0, s: 0, l: 0 };
+        const outsideColorHSL = { h: 0, s: 0, l: 0 };
 
-      //     // Convert current colors to HSL
-      //     new THREE.Color(parameters.insideColor).getHSL(insideColorHSL);
-      //     new THREE.Color(parameters.outsideColor).getHSL(outsideColorHSL);
+        // Convert current colors to HSL
+        new THREE.Color(parameters.insideColor).getHSL(insideColorHSL);
+        new THREE.Color(parameters.outsideColor).getHSL(outsideColorHSL);
 
-      //     // Create new colors with animated hue
-      //     const newInsideColor = new THREE.Color().setHSL(
-      //       (insideColorHSL.h + hue) % 1,
-      //       insideColorHSL.s,
-      //       insideColorHSL.l
-      //     );
-      //     const newOutsideColor = new THREE.Color().setHSL(
-      //       (outsideColorHSL.h + hue + 0.5) % 1,
-      //       outsideColorHSL.s,
-      //       outsideColorHSL.l
-      //     );
+        // Create new colors with animated hue
+        const newInsideColor = new THREE.Color().setHSL(
+          (insideColorHSL.h + hue) % 1,
+          insideColorHSL.s,
+          insideColorHSL.l
+        );
+        const newOutsideColor = new THREE.Color().setHSL(
+          (outsideColorHSL.h + hue + 0.5) % 1,
+          outsideColorHSL.s,
+          outsideColorHSL.l
+        );
 
-      //     // Update colors in the geometry
-      //     const positions = galaxyPoints.geometry.attributes.position.array;
-      //     const colors = galaxyPoints.geometry.attributes.color.array;
+        // Update colors in the geometry
+        const positions = galaxyPoints.geometry.attributes.position.array;
+        const colors = galaxyPoints.geometry.attributes.color.array;
 
-      //     for (let i = 0; i < parameters.count; i++) {
-      //       const i3 = i * 3;
-      //       const radius_i =
-      //         Math.sqrt(
-      //           Math.pow(positions[i3], 2) +
-      //             Math.pow(positions[i3 + 1], 2) +
-      //             Math.pow(positions[i3 + 2], 2)
-      //         ) / parameters.radius;
+        for (let i = 0; i < parameters.count; i++) {
+          const i3 = i * 3;
+          const radius_i =
+            Math.sqrt(
+              Math.pow(positions[i3], 2) +
+                Math.pow(positions[i3 + 1], 2) +
+                Math.pow(positions[i3 + 2], 2)
+            ) / parameters.radius;
 
-      //       const mixedColor = newInsideColor.clone();
-      //       mixedColor.lerp(newOutsideColor, radius_i);
+          const mixedColor = newInsideColor.clone();
+          mixedColor.lerp(newOutsideColor, radius_i);
 
-      //       colors[i3] = mixedColor.r;
-      //       colors[i3 + 1] = mixedColor.g;
-      //       colors[i3 + 2] = mixedColor.b;
-      //     }
+          colors[i3] = mixedColor.r;
+          colors[i3 + 1] = mixedColor.g;
+          colors[i3 + 2] = mixedColor.b;
+        }
 
-      //     galaxyPoints.geometry.attributes.color.needsUpdate = true;
-      //   }
+        galaxyPoints.geometry.attributes.color.needsUpdate = true;
+      }
 
       // Animate spin
-      //   if (parameters.animateSpin && galaxyPoints) {
-      //     const spinVariation = Math.sin(time * 0.2) * 0.5;
-      //     const positions = galaxyPoints.geometry.attributes.position.array;
+      if (parameters.animateSpin && galaxyPoints) {
+        const spinVariation = Math.sin(time * 0.2) * 0.5;
+        const positions = galaxyPoints.geometry.attributes.position.array;
 
-      //     for (let i = 0; i < parameters.count; i++) {
-      //       const i3 = i * 3;
+        for (let i = 0; i < parameters.count; i++) {
+          const i3 = i * 3;
 
-      //       // Get current position
-      //       const x = positions[i3];
-      //       const z = positions[i3 + 2];
+          // Get current position
+          const x = positions[i3];
+          const z = positions[i3 + 2];
 
-      //       // Calculate distance from center
-      //       const distance = Math.sqrt(x * x + z * z);
+          // Calculate distance from center
+          const distance = Math.sqrt(x * x + z * z);
 
-      //       // Apply additional rotation based on distance and time
-      //       const angle = spinVariation * (distance / parameters.radius) * delta;
-      //       const cos = Math.cos(angle);
-      //       const sin = Math.sin(angle);
+          // Apply additional rotation based on distance and time
+          const angle = spinVariation * (distance / parameters.radius) * delta;
+          const cos = Math.cos(angle);
+          const sin = Math.sin(angle);
 
-      //       // Apply rotation matrix
-      //       positions[i3] = x * cos - z * sin;
-      //       positions[i3 + 2] = x * sin + z * cos;
-      //     }
+          // Apply rotation matrix
+          positions[i3] = x * cos - z * sin;
+          positions[i3 + 2] = x * sin + z * cos;
+        }
 
-      //     galaxyPoints.geometry.attributes.position.needsUpdate = true;
-      //   }
+        galaxyPoints.geometry.attributes.position.needsUpdate = true;
+      }
 
       // Update shooting stars
-      //   for (const star of shootingStars) {
-      //     if (star.userData.active) {
-      //       // Move in the set direction
-      //       star.position.x += star.userData.direction.x * delta * 30;
-      //       star.position.y += star.userData.direction.y * delta * 30;
-      //       star.position.z += star.userData.direction.z * delta * 30;
+      for (const star of shootingStars) {
+        if (star.userData.active) {
+          // Move in the set direction
+          star.position.x += star.userData.direction.x * delta * 30;
+          star.position.y += star.userData.direction.y * delta * 30;
+          star.position.z += star.userData.direction.z * delta * 30;
 
-      //       // Check if it's gone past the center
-      //       const distanceFromCenter = star.position.length();
+          // Check if it's gone past the center
+          const distanceFromCenter = star.position.length();
 
-      //       if (distanceFromCenter < 1) {
-      //         star.userData.active = false;
-      //         scene.remove(star);
-      //       }
-      //     }
-      //   }
+          if (distanceFromCenter < 1) {
+            star.userData.active = false;
+            scene.remove(star);
+          }
+        }
+      }
 
       // Render
       renderer.render(scene, camera);

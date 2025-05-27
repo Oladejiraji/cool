@@ -13,14 +13,18 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as TodoImport } from './routes/todo'
 import { Route as TestImport } from './routes/test'
+import { Route as SvgWireImport } from './routes/svg-wire'
 import { Route as SprayImport } from './routes/spray'
 import { Route as PathTestImport } from './routes/path-test'
 import { Route as PathImport } from './routes/path'
+import { Route as PaintImport } from './routes/paint'
 import { Route as LoaderAnimationImport } from './routes/loader-animation'
+import { Route as LandingPageImport } from './routes/landing-page'
 import { Route as IslandImport } from './routes/island'
 import { Route as GooImport } from './routes/goo'
 import { Route as GalaxyImport } from './routes/galaxy'
 import { Route as ClockImport } from './routes/clock'
+import { Route as AssessmentImport } from './routes/assessment'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -34,6 +38,12 @@ const TodoRoute = TodoImport.update({
 const TestRoute = TestImport.update({
   id: '/test',
   path: '/test',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SvgWireRoute = SvgWireImport.update({
+  id: '/svg-wire',
+  path: '/svg-wire',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -55,9 +65,21 @@ const PathRoute = PathImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const PaintRoute = PaintImport.update({
+  id: '/paint',
+  path: '/paint',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const LoaderAnimationRoute = LoaderAnimationImport.update({
   id: '/loader-animation',
   path: '/loader-animation',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LandingPageRoute = LandingPageImport.update({
+  id: '/landing-page',
+  path: '/landing-page',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -85,6 +107,12 @@ const ClockRoute = ClockImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AssessmentRoute = AssessmentImport.update({
+  id: '/assessment',
+  path: '/assessment',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -100,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/assessment': {
+      id: '/assessment'
+      path: '/assessment'
+      fullPath: '/assessment'
+      preLoaderRoute: typeof AssessmentImport
       parentRoute: typeof rootRoute
     }
     '/clock': {
@@ -130,11 +165,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IslandImport
       parentRoute: typeof rootRoute
     }
+    '/landing-page': {
+      id: '/landing-page'
+      path: '/landing-page'
+      fullPath: '/landing-page'
+      preLoaderRoute: typeof LandingPageImport
+      parentRoute: typeof rootRoute
+    }
     '/loader-animation': {
       id: '/loader-animation'
       path: '/loader-animation'
       fullPath: '/loader-animation'
       preLoaderRoute: typeof LoaderAnimationImport
+      parentRoute: typeof rootRoute
+    }
+    '/paint': {
+      id: '/paint'
+      path: '/paint'
+      fullPath: '/paint'
+      preLoaderRoute: typeof PaintImport
       parentRoute: typeof rootRoute
     }
     '/path': {
@@ -158,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SprayImport
       parentRoute: typeof rootRoute
     }
+    '/svg-wire': {
+      id: '/svg-wire'
+      path: '/svg-wire'
+      fullPath: '/svg-wire'
+      preLoaderRoute: typeof SvgWireImport
+      parentRoute: typeof rootRoute
+    }
     '/test': {
       id: '/test'
       path: '/test'
@@ -179,28 +235,36 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assessment': typeof AssessmentRoute
   '/clock': typeof ClockRoute
   '/galaxy': typeof GalaxyRoute
   '/goo': typeof GooRoute
   '/island': typeof IslandRoute
+  '/landing-page': typeof LandingPageRoute
   '/loader-animation': typeof LoaderAnimationRoute
+  '/paint': typeof PaintRoute
   '/path': typeof PathRoute
   '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
+  '/svg-wire': typeof SvgWireRoute
   '/test': typeof TestRoute
   '/todo': typeof TodoRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assessment': typeof AssessmentRoute
   '/clock': typeof ClockRoute
   '/galaxy': typeof GalaxyRoute
   '/goo': typeof GooRoute
   '/island': typeof IslandRoute
+  '/landing-page': typeof LandingPageRoute
   '/loader-animation': typeof LoaderAnimationRoute
+  '/paint': typeof PaintRoute
   '/path': typeof PathRoute
   '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
+  '/svg-wire': typeof SvgWireRoute
   '/test': typeof TestRoute
   '/todo': typeof TodoRoute
 }
@@ -208,14 +272,18 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/assessment': typeof AssessmentRoute
   '/clock': typeof ClockRoute
   '/galaxy': typeof GalaxyRoute
   '/goo': typeof GooRoute
   '/island': typeof IslandRoute
+  '/landing-page': typeof LandingPageRoute
   '/loader-animation': typeof LoaderAnimationRoute
+  '/paint': typeof PaintRoute
   '/path': typeof PathRoute
   '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
+  '/svg-wire': typeof SvgWireRoute
   '/test': typeof TestRoute
   '/todo': typeof TodoRoute
 }
@@ -224,40 +292,52 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/assessment'
     | '/clock'
     | '/galaxy'
     | '/goo'
     | '/island'
+    | '/landing-page'
     | '/loader-animation'
+    | '/paint'
     | '/path'
     | '/path-test'
     | '/spray'
+    | '/svg-wire'
     | '/test'
     | '/todo'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/assessment'
     | '/clock'
     | '/galaxy'
     | '/goo'
     | '/island'
+    | '/landing-page'
     | '/loader-animation'
+    | '/paint'
     | '/path'
     | '/path-test'
     | '/spray'
+    | '/svg-wire'
     | '/test'
     | '/todo'
   id:
     | '__root__'
     | '/'
+    | '/assessment'
     | '/clock'
     | '/galaxy'
     | '/goo'
     | '/island'
+    | '/landing-page'
     | '/loader-animation'
+    | '/paint'
     | '/path'
     | '/path-test'
     | '/spray'
+    | '/svg-wire'
     | '/test'
     | '/todo'
   fileRoutesById: FileRoutesById
@@ -265,28 +345,36 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssessmentRoute: typeof AssessmentRoute
   ClockRoute: typeof ClockRoute
   GalaxyRoute: typeof GalaxyRoute
   GooRoute: typeof GooRoute
   IslandRoute: typeof IslandRoute
+  LandingPageRoute: typeof LandingPageRoute
   LoaderAnimationRoute: typeof LoaderAnimationRoute
+  PaintRoute: typeof PaintRoute
   PathRoute: typeof PathRoute
   PathTestRoute: typeof PathTestRoute
   SprayRoute: typeof SprayRoute
+  SvgWireRoute: typeof SvgWireRoute
   TestRoute: typeof TestRoute
   TodoRoute: typeof TodoRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssessmentRoute: AssessmentRoute,
   ClockRoute: ClockRoute,
   GalaxyRoute: GalaxyRoute,
   GooRoute: GooRoute,
   IslandRoute: IslandRoute,
+  LandingPageRoute: LandingPageRoute,
   LoaderAnimationRoute: LoaderAnimationRoute,
+  PaintRoute: PaintRoute,
   PathRoute: PathRoute,
   PathTestRoute: PathTestRoute,
   SprayRoute: SprayRoute,
+  SvgWireRoute: SvgWireRoute,
   TestRoute: TestRoute,
   TodoRoute: TodoRoute,
 }
@@ -302,20 +390,27 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/assessment",
         "/clock",
         "/galaxy",
         "/goo",
         "/island",
+        "/landing-page",
         "/loader-animation",
+        "/paint",
         "/path",
         "/path-test",
         "/spray",
+        "/svg-wire",
         "/test",
         "/todo"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/assessment": {
+      "filePath": "assessment.tsx"
     },
     "/clock": {
       "filePath": "clock.tsx"
@@ -329,8 +424,14 @@ export const routeTree = rootRoute
     "/island": {
       "filePath": "island.tsx"
     },
+    "/landing-page": {
+      "filePath": "landing-page.tsx"
+    },
     "/loader-animation": {
       "filePath": "loader-animation.tsx"
+    },
+    "/paint": {
+      "filePath": "paint.tsx"
     },
     "/path": {
       "filePath": "path.tsx"
@@ -340,6 +441,9 @@ export const routeTree = rootRoute
     },
     "/spray": {
       "filePath": "spray.tsx"
+    },
+    "/svg-wire": {
+      "filePath": "svg-wire.tsx"
     },
     "/test": {
       "filePath": "test.tsx"

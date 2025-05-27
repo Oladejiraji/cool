@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kalnia+Glaze:wght@100..700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -135,4 +138,33 @@ body {
   100% {
     offset-distance: 100%;
   }
+}
+
+@keyframes to-down {
+  0% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(50px);
+  }
+}
+
+.custom-cursor {
+  cursor: url("/circle.png"), pointer;
+}
+
+.geist-medium {
+  font-family: "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+.custom-animate-pulse {
+  animation: pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

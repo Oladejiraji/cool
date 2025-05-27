@@ -13,7 +13,7 @@ const RootComponent = () => {
   const nextMatch = matches[nextMatchIndex];
 
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence mode="wait">
       <AnimatedOutlets key={nextMatch.id} />
     </AnimatePresence>
   );

@@ -21,17 +21,17 @@ const AnimatedOutlet = forwardRef<HTMLDivElement>((_, ref) => {
     <motion.div
       ref={ref}
       //   initial={{ y: 0 }}
-      animate={{ y: "100%" }}
+      // animate={{ y: "100%" }}
       //   exit={{ y: 0 }}
     >
       <RouterContext.Provider value={renderedContext.current}>
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           {AppRoutes.map((route, i) => (
             <Link key={i} to={route.path} className="underline">
               {route.name}
             </Link>
           ))}
-        </div>
+        </div> */}
         <Outlet />
       </RouterContext.Provider>
     </motion.div>
