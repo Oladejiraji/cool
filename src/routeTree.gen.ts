@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TodoImport } from './routes/todo'
+import { Route as TestImport } from './routes/test'
 import { Route as SvgWireImport } from './routes/svg-wire'
 import { Route as SprayImport } from './routes/spray'
 import { Route as PathTestImport } from './routes/path-test'
@@ -30,6 +31,12 @@ import { Route as IndexImport } from './routes/index'
 const TodoRoute = TodoImport.update({
   id: '/todo',
   path: '/todo',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TestRoute = TestImport.update({
+  id: '/test',
+  path: '/test',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -193,6 +200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SvgWireImport
       parentRoute: typeof rootRoute
     }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestImport
+      parentRoute: typeof rootRoute
+    }
     '/todo': {
       id: '/todo'
       path: '/todo'
@@ -218,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
   '/svg-wire': typeof SvgWireRoute
+  '/test': typeof TestRoute
   '/todo': typeof TodoRoute
 }
 
@@ -234,6 +249,7 @@ export interface FileRoutesByTo {
   '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
   '/svg-wire': typeof SvgWireRoute
+  '/test': typeof TestRoute
   '/todo': typeof TodoRoute
 }
 
@@ -251,6 +267,7 @@ export interface FileRoutesById {
   '/path-test': typeof PathTestRoute
   '/spray': typeof SprayRoute
   '/svg-wire': typeof SvgWireRoute
+  '/test': typeof TestRoute
   '/todo': typeof TodoRoute
 }
 
@@ -269,6 +286,7 @@ export interface FileRouteTypes {
     | '/path-test'
     | '/spray'
     | '/svg-wire'
+    | '/test'
     | '/todo'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -284,6 +302,7 @@ export interface FileRouteTypes {
     | '/path-test'
     | '/spray'
     | '/svg-wire'
+    | '/test'
     | '/todo'
   id:
     | '__root__'
@@ -299,6 +318,7 @@ export interface FileRouteTypes {
     | '/path-test'
     | '/spray'
     | '/svg-wire'
+    | '/test'
     | '/todo'
   fileRoutesById: FileRoutesById
 }
@@ -316,6 +336,7 @@ export interface RootRouteChildren {
   PathTestRoute: typeof PathTestRoute
   SprayRoute: typeof SprayRoute
   SvgWireRoute: typeof SvgWireRoute
+  TestRoute: typeof TestRoute
   TodoRoute: typeof TodoRoute
 }
 
@@ -332,6 +353,7 @@ const rootRouteChildren: RootRouteChildren = {
   PathTestRoute: PathTestRoute,
   SprayRoute: SprayRoute,
   SvgWireRoute: SvgWireRoute,
+  TestRoute: TestRoute,
   TodoRoute: TodoRoute,
 }
 
@@ -357,6 +379,7 @@ export const routeTree = rootRoute
         "/path-test",
         "/spray",
         "/svg-wire",
+        "/test",
         "/todo"
       ]
     },
@@ -395,6 +418,9 @@ export const routeTree = rootRoute
     },
     "/svg-wire": {
       "filePath": "svg-wire.tsx"
+    },
+    "/test": {
+      "filePath": "test.tsx"
     },
     "/todo": {
       "filePath": "todo.tsx"

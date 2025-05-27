@@ -1,210 +1,90 @@
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { Observer } from "gsap/Observer";
-import { MovieData } from "../data/movie";
-import { Fragment } from "react/jsx-runtime";
-import { centerDistance } from "../utils/helper";
-import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
+import CanvasScene from '../components/landing-page/canvas-scene'
+import HoverTooltip from '../components/landing-page/hover-tooltip'
 
-gsap.registerPlugin(Observer);
-const CARD_WIDTH_BUFFER = 30;
+export const Route = createFileRoute('/')({
+  component: RouteComponent,
+})
 
-const Home = () => {
-  // State
-  const [columns, setColumns] = useState(window.innerWidth < 1024 ? 3 : 5);
-  const [cardSpacing, setCardSpacing] = useState(window.innerHeight * 0.06);
-  const [cardWidth, setCardWidth] = useState(
-    (window.innerWidth - cardSpacing * columns - 1) / columns +
-      CARD_WIDTH_BUFFER
-  );
-  // Constants
-  const CARD_REPEAT = 8;
-  const CARD_HEIGHT = cardWidth * 1.3;
-  // const velocityRef = useRef(0);
-  // const COLUMN_CARD_NO = 10 * CARD_REPEAT;
-  // const TOTAL_COLUMN_HEIGHT =
-  //   CARD_HEIGHT * COLUMN_CARD_NO + cardSpacing * (COLUMN_CARD_NO - 1);
-
-  // Function to reset grid positions
-  const resetGrids = (gridArray: Element[]) => {
-    const gridCon = gridArray[0].getBoundingClientRect() as DOMRect;
-    // console.log(reset)
-    gridArray.forEach((section) => {
-      gsap.set(section, {
-        y: `-${gridCon.height / 2}`,
-      });
-    });
-  };
-
-  // const decelerateGrid = (observer: Observer) => {
-  //   const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
-
-  //   const gridCon = gridArray[
-  //     (gridArray.length - 1) / 2
-  //   ]?.getBoundingClientRect() as DOMRect;
-  //   const resetPoint =
-  //     Math.floor(Math.abs(gridCon.y)) >
-  //       Math.floor((gridCon.height * 5) / CARD_REPEAT) ||
-  //     Math.floor(Math.abs(gridCon.y)) <
-  //       Math.floor((gridCon.height * 3) / CARD_REPEAT);
-
-  //   if (resetPoint) return;
-
-  //   const appplyDec = () => {
-  //     if (Math.abs(velocityRef.current) > 0) {
-  //       // Add a deceleration
-  //       console.log(velocityRef.current);
-  //       gridArray.forEach((section, i) => {
-  //         const usableDist = centerDistance(gridArray, i) + 1;
-  //         gsap.to(section, {
-  //           duration: 0.5,
-  //           ease: "none",
-  //           y: `+=${usableDist * velocityRef.current}`,
-  //         });
-  //       });
-  //       velocityRef.current = velocityRef.current * 0.95;
-  //       requestAnimationFrame(appplyDec);
-  //     }
-  //   };
-  //   velocityRef.current = observer.deltaY;
-  //   requestAnimationFrame(appplyDec);
-  // };
-
-  // Handle scroll function
-  const handleScroll = (observer: Observer) => {
-    const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
-
-    const gridCon = gridArray[
-      (gridArray.length - 1) / 2
-    ]?.getBoundingClientRect() as DOMRect;
-    const resetPoint =
-      Math.floor(Math.abs(gridCon.y)) >
-        Math.floor((gridCon.height * 5) / CARD_REPEAT) ||
-      Math.floor(Math.abs(gridCon.y)) <
-        Math.floor((gridCon.height * 3) / CARD_REPEAT);
-    if (resetPoint) {
-      resetGrids(gridArray);
-    } else {
-      const typeSpeed = observer.event.type.includes("touch") ? 3 : 2;
-      gridArray.forEach((section, i) => {
-        const usableDist = centerDistance(gridArray, i) + 1;
-        gsap.to(section, {
-          duration: 0.2,
-          ease: "none",
-          y: `+=${usableDist * observer.deltaY * typeSpeed}`,
-        });
-      });
-    }
-  };
-
-  const handleResize = () => {
-    const currColumns = window.innerWidth < 1024 ? 3 : 5;
-    setColumns(currColumns);
-    setCardSpacing(window.innerHeight * 0.06);
-    setCardWidth(
-      (window.innerWidth - cardSpacing * currColumns - 1) / currColumns +
-        CARD_WIDTH_BUFFER
-    );
-    const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
-    resetGrids(gridArray);
-  };
-
-  // Throttle resize event
-  let resizeTimeout: number | null;
-  const resizeThrottler = () => {
-    if (!resizeTimeout) {
-      resizeTimeout = setTimeout(() => {
-        resizeTimeout = null;
-        handleResize();
-        // The actualResizeHandler will execute at a rate of 15fps
-      }, 66);
-    }
-  };
-
-  // Scroll observer
-  useGSAP(() => {
-    Observer.create({
-      target: window,
-      type: "wheel,pointer,touch",
-      onDown: (self) => handleScroll(self),
-      onUp: (self) => handleScroll(self),
-      wheelSpeed: -1,
-      // onDragEnd: (self) => {
-      //   decelerateGrid(self);
-      // },
-    });
-  });
-
-  // Initial slider setup
-  useEffect(() => {
-    const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
-    resetGrids(gridArray);
-  }, []);
-
-  // Resize event
-  useEffect(() => {
-    window.addEventListener("resize", resizeThrottler, false);
-    return () => window.removeEventListener("resize", resizeThrottler, false);
-  }, []);
-
-  // Screen orientation change event
-  // useEffect(() => {
-  //   screen?.orientation.addEventListener("change", handleResize);
-  //   return () => {
-  //     screen?.orientation.removeEventListener("change", handleResize);
-  //   };
-  // }, []);
-
+function RouteComponent() {
   return (
-    <main
-      className="absolute inset-0 flex justify-center overflow-hidden bg-primary-100 main_mask"
-      style={{
-        gap: `${cardSpacing}px`,
-      }}
-    >
-      {new Array(columns).fill(0).map((_, columnIndex) => (
-        <div
-          key={columnIndex}
-          className="flex flex-col items-center justify-center h-fit infinity_grid_con"
-          id="infinity_grid_con"
-          style={{
-            // transform: `translate(0px, -${TOTAL_COLUMN_HEIGHT / 2.001}px)`,
-            rowGap: `${cardSpacing}px`,
-          }}
-        >
-          {new Array(CARD_REPEAT).fill(0).map((_, repeatIndex) => (
-            <Fragment key={repeatIndex}>
-              {MovieData.slice(columnIndex * 10, (columnIndex + 1) * 10).map(
-                (movie, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid_images hover:scale-105 hover:rotate-[0.05deg] transition-transform duration-500"
-                      style={{
-                        height: `${CARD_HEIGHT}px`,
-                        width: `${cardWidth}px`,
-                      }}
-                    >
-                      <img
-                        // src="/assets/movie.webp"
-                        src={movie.image?.medium || "/assets/movie.webp"}
-                        loading="lazy"
-                        alt={movie.name}
-                        className="w-full h-full rounded-lg"
-                      />
-                    </div>
-                  );
-                }
-              )}
-            </Fragment>
-          ))}
-        </div>
-      ))}
-    </main>
-  );
-};
+    <main className="h-screen py-6">
+      <div className="flex flex-col items-center justify-between h-full">
+        <div>
+          <nav className="flex items-center justify-between w-[376px] mx-auto h-12 shadow px-3 rounded-[15px]">
+            <h1 className="text-base geist-medium">foggy</h1>
+            <div className="flex items-center gap-3 text-sm geist-medium">
+              <p>Docs</p>
+              <p>Products</p>
+              <p>Pricing</p>
+              <button className="bg-[#000000] text-white rounded-[11px] py-2 px-[10px]">
+                <p>Free Trial</p>
+              </button>
+            </div>
+          </nav>
 
-export const Route = createFileRoute("/")({
-  component: Home,
-});
+          <div className="bg-[#F5F5F5] rounded-[20px] w-[276px] mx-auto mt-5 geist-medium text-[13px] flex items-center gap-1 px-2 py-1">
+            <p className="text-[#828282] ">Foggy is currently raising.</p>
+            <div className="flex items-center gap-1">
+              <p className="text-[#282828] underline">learn more</p>
+              <img src="/assets/right.png" alt="" className="w-2 h-auto" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="relative ">
+            <div className="absolute ">
+              <img
+                src="/assets/paint2.png"
+                alt=""
+                className="w-[432px] h-[432px] "
+              />
+            </div>
+
+            <HoverTooltip />
+
+            <CanvasScene />
+          </div>
+        </div>
+
+        <div className="flex items-center w-[891px] justify-between">
+          <div className="geist-normal w-[334px]">
+            <h1 className="pb-1 text-2xl">AI Restoration at its Peak.</h1>
+            <p className="text-sm text-[#646464] pb-4">
+              Foggy makes restoration of pixelated and blurry photos as easy as
+              waving a wand. No really, wave your cursor a few times and watch
+              foggy work its magic.
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-[#E27625] text-[13px] p-1 bg-[#F5D6BE] rounded-[5px]">
+                Image clean up
+              </p>
+              <p className="text-[#5CFE9D] text-[13px] p-1 bg-[#E7FBEF] rounded-[5px]">
+                Generative fill
+              </p>
+              <p className="text-[#828282] text-[13px] p-1 bg-[#F5F5F5] rounded-[5px]">
+                Generative fill
+              </p>
+            </div>
+          </div>
+          <div>
+            <div className="bg-[#EFEFEF] p-1 rounded-[5px]">
+              <input
+                type="text"
+                placeholder="Email Address here"
+                className="px-2 text-sm bg-transparent geist-normal"
+              />
+              <button className="text-[#919191] p-1 bg-[#C7C7C7] rounded-[5px] text-sm geist-normal">
+                Join Waitlist
+              </button>
+            </div>
+            <p className="text-[#828282] geist-normal text-[13px] pt-1">
+              be one of the first to get access to foggy
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  )
+}
