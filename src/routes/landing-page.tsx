@@ -1,4 +1,3 @@
-import React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import CanvasScene from "../components/landing-page/canvas-scene";
 import HoverTooltip from "../components/landing-page/hover-tooltip";

@@ -1,8 +1,7 @@
-import { getRouterContext, Link, Outlet } from "@tanstack/react-router";
+import { getRouterContext, Outlet } from "@tanstack/react-router";
 import { motion, useIsPresent } from "framer-motion";
 import { cloneDeep } from "lodash";
 import { forwardRef, useContext, useRef } from "react";
-import { AppRoutes } from "../utils/static";
 
 const AnimatedOutlet = forwardRef<HTMLDivElement>((_, ref) => {
   const RouterContext = getRouterContext();

@@ -1,4 +1,3 @@
-import React from "react";
 import { TodoType } from "../../routes/todo";
 
 interface IProps {

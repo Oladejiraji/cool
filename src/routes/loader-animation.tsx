@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import React, { useEffect } from "react";
 
 const Loader = () => {
   const lineCount = 60;
@@ -9,32 +8,32 @@ const Loader = () => {
   const extendedLineLength = lineLength + 20;
   const circleLengthExtension = lineLength + 50;
   const extendedLineDiameter = circleSize + circleLengthExtension * 2;
-  useEffect(() => {
-    const gParent = document.getElementById("g-parent");
-    if (!gParent) return;
-    const lastLine = gParent.lastChild;
-    const lastAnimation = lastLine?.lastChild?.lastChild;
+  // useEffect(() => {
+  //   const gParent = document.getElementById("g-parent");
+  //   if (!gParent) return;
+  //   const lastLine = gParent.lastChild;
+  //   const lastAnimation = lastLine?.lastChild?.lastChild;
 
-    lastAnimation?.addEventListener("endEvent", () => {
-      setTimeout(() => {
-        gParent.childNodes.forEach((group, i) => {
-          const textSvg = group.firstChild;
-          const lineSvg = group.lastChild;
+  //   lastAnimation?.addEventListener("endEvent", () => {
+  //     setTimeout(() => {
+  //       gParent.childNodes.forEach((group, i) => {
+  //         const textSvg = group.firstChild;
+  //         const lineSvg = group.lastChild;
 
-          textSvg?.childNodes.forEach((anim) => {
-            if (anim.beginElement) {
-              anim.beginElementAt(i * 0.2);
-            }
-          });
-          lineSvg?.childNodes.forEach((anim) => {
-            if (anim.beginElement) {
-              anim.beginElementAt(i * 0.2);
-            }
-          });
-        });
-      }, 500);
-    });
-  }, []);
+  //         textSvg?.childNodes.forEach((anim) => {
+  //           if (anim.beginElement) {
+  //             anim.beginElementAt(i * 0.2);
+  //           }
+  //         });
+  //         lineSvg?.childNodes.forEach((anim) => {
+  //           if (anim.beginElement) {
+  //             anim.beginElementAt(i * 0.2);
+  //           }
+  //         });
+  //       });
+  //     }, 500);
+  //   });
+  // }, []);
   return (
     <div className="flex items-center justify-center w-screen h-screen">
       <svg

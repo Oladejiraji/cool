@@ -1,12 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { splitStringUsingRegex } from "../../utils/helper";
-
-const characterVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
 
 const HoverTooltip = () => {
   const [isHovered, setIsHovered] = useState(false);

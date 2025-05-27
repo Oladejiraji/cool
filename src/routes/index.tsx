@@ -4,7 +4,7 @@ import { Observer } from "gsap/Observer";
 import { MovieData } from "../data/movie";
 import { Fragment } from "react/jsx-runtime";
 import { centerDistance } from "../utils/helper";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 gsap.registerPlugin(Observer);
@@ -21,7 +21,7 @@ const Home = () => {
   // Constants
   const CARD_REPEAT = 8;
   const CARD_HEIGHT = cardWidth * 1.3;
-  const velocityRef = useRef(0);
+  // const velocityRef = useRef(0);
   // const COLUMN_CARD_NO = 10 * CARD_REPEAT;
   // const TOTAL_COLUMN_HEIGHT =
   //   CARD_HEIGHT * COLUMN_CARD_NO + cardSpacing * (COLUMN_CARD_NO - 1);
@@ -37,39 +37,39 @@ const Home = () => {
     });
   };
 
-  const decelerateGrid = (observer: Observer) => {
-    const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
+  // const decelerateGrid = (observer: Observer) => {
+  //   const gridArray = gsap.utils.toArray(".infinity_grid_con") as Element[];
 
-    const gridCon = gridArray[
-      (gridArray.length - 1) / 2
-    ]?.getBoundingClientRect() as DOMRect;
-    const resetPoint =
-      Math.floor(Math.abs(gridCon.y)) >
-        Math.floor((gridCon.height * 5) / CARD_REPEAT) ||
-      Math.floor(Math.abs(gridCon.y)) <
-        Math.floor((gridCon.height * 3) / CARD_REPEAT);
+  //   const gridCon = gridArray[
+  //     (gridArray.length - 1) / 2
+  //   ]?.getBoundingClientRect() as DOMRect;
+  //   const resetPoint =
+  //     Math.floor(Math.abs(gridCon.y)) >
+  //       Math.floor((gridCon.height * 5) / CARD_REPEAT) ||
+  //     Math.floor(Math.abs(gridCon.y)) <
+  //       Math.floor((gridCon.height * 3) / CARD_REPEAT);
 
-    if (resetPoint) return;
+  //   if (resetPoint) return;
 
-    const appplyDec = () => {
-      if (Math.abs(velocityRef.current) > 0) {
-        // Add a deceleration
-        console.log(velocityRef.current);
-        gridArray.forEach((section, i) => {
-          const usableDist = centerDistance(gridArray, i) + 1;
-          gsap.to(section, {
-            duration: 0.5,
-            ease: "none",
-            y: `+=${usableDist * velocityRef.current}`,
-          });
-        });
-        velocityRef.current = velocityRef.current * 0.95;
-        requestAnimationFrame(appplyDec);
-      }
-    };
-    velocityRef.current = observer.deltaY;
-    requestAnimationFrame(appplyDec);
-  };
+  //   const appplyDec = () => {
+  //     if (Math.abs(velocityRef.current) > 0) {
+  //       // Add a deceleration
+  //       console.log(velocityRef.current);
+  //       gridArray.forEach((section, i) => {
+  //         const usableDist = centerDistance(gridArray, i) + 1;
+  //         gsap.to(section, {
+  //           duration: 0.5,
+  //           ease: "none",
+  //           y: `+=${usableDist * velocityRef.current}`,
+  //         });
+  //       });
+  //       velocityRef.current = velocityRef.current * 0.95;
+  //       requestAnimationFrame(appplyDec);
+  //     }
+  //   };
+  //   velocityRef.current = observer.deltaY;
+  //   requestAnimationFrame(appplyDec);
+  // };
 
   // Handle scroll function
   const handleScroll = (observer: Observer) => {
@@ -130,9 +130,9 @@ const Home = () => {
       onDown: (self) => handleScroll(self),
       onUp: (self) => handleScroll(self),
       wheelSpeed: -1,
-      onDragEnd: (self) => {
-        // decelerateGrid(self);
-      },
+      // onDragEnd: (self) => {
+      //   decelerateGrid(self);
+      // },
     });
   });
 
