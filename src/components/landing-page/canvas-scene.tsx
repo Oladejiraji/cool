@@ -102,7 +102,16 @@ const CanvasScene = () => {
     ctx.fill();
 
     // Add the circle to our queue
-    circlesQueueRef.current.push({ x, y, radius });
+    // Check if coordinates already exist in the queue
+    const isDuplicate = circlesQueueRef.current.some(
+      (circle) => circle.x === x && circle.y === y
+    );
+
+    // Only add to queue if it's not a duplicate
+    if (!isDuplicate) {
+      circlesQueueRef.current.push({ x, y, radius });
+    }
+    // circlesQueueRef.current.push({ x, y, radius });
   };
 
   const manageMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -114,7 +123,7 @@ const CanvasScene = () => {
     const canvasClientX = clientX - rect.left;
     const canvasClientY = clientY - rect.top;
 
-    const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
+    const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 20;
 
     if (prevPosition.current != null) {
       const { x, y } = prevPosition.current;

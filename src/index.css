@@ -159,6 +159,12 @@ body {
   font-weight: 500;
   font-style: normal;
 }
+.geist-semibold {
+  font-family: "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
 
 @keyframes pulse {
   50% {
